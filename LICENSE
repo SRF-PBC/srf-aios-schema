@@ -1,0 +1,61 @@
+SRF AIOS Schema Definitions — Licensing Notice
+Version: 2.0.0
+Date: 2025-11-08
+
+Copyright © 2025
+Seldon Reflex Foundation (SRF)
+https://seldonreflex.org
+
+This schema package ("SRF AIOS Schema") defines core data structures and protocols for reflexive cognitive systems governed by SRF architecture, including but not limited to: agent identity (RAIR), trust vectors, reflexive memory, and agent lifecycle semantics.
+
+This package is licensed under a **Standards-Essential Patent (SEP) and FRAND Terms License**, as defined below.
+
+——————————————————————————————————————
+
+📜 **LICENSE GRANT (FRAND)**
+
+Subject to the conditions below, SRF hereby grants to any person or organization a **worldwide, royalty-free, non-exclusive license** to:
+
+• Use, reproduce, and distribute this package  
+• Implement software, services, or agents that conform to the defined schemas  
+• Extend or modify the schema for derivative or domain-specific use cases  
+• Embed the schema into commercial or open-source systems  
+
+This license is granted under **Fair, Reasonable, and Non-Discriminatory (FRAND)** terms **only for implementations that conform to the published schema and adhere to any related reflexive governance protocols defined by SRF**.
+
+——————————————————————————————————————
+
+🛡️ **STANDARDS-ESSENTIAL PATENT NOTICE**
+
+Use of this schema may require implementation of methods or systems that are covered under one or more patents or pending patents held by SRF or licensed by Inflect.AI, including systems for:
+
+• Reflexive memory access control  
+• Agent instantiation and identity binding (RAIR)  
+• Governance-bound lifecycle enforcement  
+• Semantic deviation detection and drift prevention  
+• Trust vector computation and use
+
+Implementations that utilize these patented mechanisms **must obtain a formal license under SRF's FRAND/SEP framework**. Licensing inquiries can be directed to: licensing@seldonreflex.org
+
+——————————————————————————————————————
+
+⚖️ **USAGE CONDITIONS & LIMITATIONS**
+
+1. **No Warranty:** This schema is provided "AS IS" without warranties of any kind.
+2. **No Trademark License:** Use of SRF name or branding requires separate written permission.
+3. **No Misrepresentation:** You may not misrepresent your implementation as being "SRF-certified" unless explicitly authorized.
+4. **Updates & Versions:** New versions may be released periodically. Backward compatibility is not guaranteed without adherence to version-specific conformance rules.
+5. **Schema Modification:** Derivative schemas must clearly indicate any deviation from this standard and must not falsely imply conformance.
+
+——————————————————————————————————————
+
+📩 **INQUIRIES**
+
+• General: info@seldonreflex.org  
+• Licensing: licensing@seldonreflex.org  
+• Legal: legal@seldonreflex.org  
+• Registry & Compliance: registry@seldonreflex.org
+
+——————————————————————————————————————
+
+This schema is designed to accelerate the safe, auditable deployment of agentic AI systems under public governance infrastructure. By adopting this standard, you agree to abide by the principles of fairness, transparency, and reflexive alignment that govern the SRF ecosystem.

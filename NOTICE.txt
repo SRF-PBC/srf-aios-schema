@@ -1,0 +1,11 @@
+SRF AIOS Schema
+Copyright © 2025 Seldon Reflex Foundation
+
+This package is distributed under FRAND/SEP terms.
+See LICENSE file for complete licensing details.
+
+Standards-Essential Patents may apply to implementations.
+For licensing inquiries: licensing@seldonreflex.org
+
+Repository: https://github.com/SRF-PBC/srf-aios-schema
+Website: https://seldonreflex.org
