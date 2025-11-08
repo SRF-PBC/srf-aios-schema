@@ -44,7 +44,6 @@ Repository = "https://github.com/SRF-PBC/srf-aios-schema.git"
 Issues = "https://github.com/SRF-PBC/srf-aios-schema/issues" 
 Changelog = "https://github.com/SRF-PBC/srf-aios-schema/blob/main/CHANGELOG.md"
 "Seldon Reflex Foundation" = "https://www.seldonreflex.org"
-"Contact" = "mailto:foundation@seldonreflex.org"
 
 [project.optional-dependencies]
 dev = [
