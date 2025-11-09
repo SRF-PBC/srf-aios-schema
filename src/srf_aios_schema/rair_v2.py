@@ -7,9 +7,9 @@ import hashlib
 import uuid
 from datetime import datetime, timezone
 from typing import Dict, List, Optional, Literal, Any
-from pydantic import BaseModel, Field, validator, ConfigDict
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 
-from pydantic import BaseModel, Field, validator, constr
+from pydantic import BaseModel, Field, field_validator, constr
 from typing import List, Dict, Optional, Literal
 from datetime import datetime, timezone
 import uuid
@@ -51,7 +51,8 @@ class ROLE(BaseModel):
     memory_refs: Optional[List[str]] = []
     version: int = 1
 
-    @validator("role_scope")
+    @field_validator("role_scope")
+    @classmethod
     def non_empty_scope(cls, v):
         if not v:
             raise ValueError("role_scope must contain at least one entry.")
@@ -67,7 +68,8 @@ class MACP(BaseModel):
     signature: Optional[str] = None
     policy_tag: Optional[str] = None
 
-    @validator("expiration")
+    @field_validator("expiration")
+    @classmethod
     def expiration_future(cls, v):
         now = datetime.now(timezone.utc) if v.tzinfo else datetime.utcnow()
         if v <= now:
@@ -97,9 +99,14 @@ class PERSONA(BaseModel):
     version: str = "1.0"
     provenance_hash: Optional[str] = None
 
-    @validator("provenance_hash", always=True)
-    def compute_persona_hash(cls, v, values):
+    @field_validator("provenance_hash", mode="before")
+    @classmethod
+    def compute_persona_hash(cls, v, info):
         """Compute deterministic hash of persona configuration"""
+        if v is not None:
+            return v
+        
+        values = info.data
         body = json.dumps({
             k: (str(v) if not isinstance(v, datetime) else v.isoformat())
             for k, v in values.items() if k != "provenance_hash"
@@ -121,9 +128,14 @@ class RAIR(BaseModel):
     policy_version: str = "v2.0"
     provenance_hash: Optional[str] = None
 
-    @validator("provenance_hash", always=True)
-    def compute_rair_hash(cls, v, values):
+    @field_validator("provenance_hash", mode="before")
+    @classmethod
+    def compute_rair_hash(cls, v, info):
         """Compute deterministic hash of complete RAIR configuration"""
+        if v is not None:
+            return v
+            
+        values = info.data
         body = json.dumps(values, default=str, sort_keys=True).encode()
         return hashlib.sha256(body).hexdigest()
 
