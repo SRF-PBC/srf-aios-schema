@@ -62,7 +62,7 @@ class ROLE(BaseModel):
 class MACP(BaseModel):
     """Memory Access Credential Package - Access rights and policies"""
     credential_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    scope: List[Literal["memory.read", "memory.write", "trustvault.commit", "audit.export"]]
+    scope: List[Literal["memory.read", "memory.write", "memory.search", "memory.handshake", "trustvault.commit", "audit.export"]]
     issuer: str
     expiration: datetime
     signature: Optional[str] = None
