@@ -104,6 +104,10 @@ ignore = [
     "E501",  # line too long, handled by black
     "B008",  # do not perform function calls in argument defaults
     "C901",  # too complex
+    "UP006", # Use `list` instead of `List` (keeping for backwards compat)
+    "UP007", # Use `X | None` instead of `Optional[X]` (keeping for backwards compat)
+    "ANN001", # Missing type annotation for function argument (Pydantic validators)
+    "ANN201", # Missing return type annotation (Pydantic validators)
 ]
 
 [tool.mypy]

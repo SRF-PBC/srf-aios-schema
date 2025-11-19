@@ -4,18 +4,11 @@ with dual-hash validation system for integrity verification and tamper detection
 """
 
 import hashlib
+import json
 import uuid
 from datetime import datetime, timezone
 from typing import Dict, List, Optional, Literal, Any
-from pydantic import BaseModel, Field, field_validator, ConfigDict
-
-from pydantic import BaseModel, Field, field_validator, constr
-from typing import List, Dict, Optional, Literal
-from datetime import datetime, timezone
-import uuid
-import hashlib
-import json
-import re
+from pydantic import BaseModel, Field, field_validator
 
 # ---------- ARC: Agent Record Core ----------
 class ARC(BaseModel):
@@ -157,7 +150,7 @@ def validate_rair_configuration(rair_data: dict) -> tuple[bool, list[str]]:
         tuple: (is_valid, list_of_errors)
     """
     try:
-        rair = RAIR(**rair_data)
+        RAIR(**rair_data)  # Validation happens in constructor
         return True, []
     except Exception as e:
         return False, [str(e)]
