@@ -98,7 +98,7 @@ class PERSONA(BaseModel):
         """Compute deterministic hash of persona configuration"""
         if v is not None:
             return v
-        
+
         values = info.data
         body = json.dumps({
             k: (str(v) if not isinstance(v, datetime) else v.isoformat())
@@ -110,7 +110,7 @@ class PERSONA(BaseModel):
 class RAIR(BaseModel):
     """
     Unified Reflexic Agent Identity Record
-    
+
     Combines ARC (origin), ROLE (function), MACP (rights), and PERSONA (conscience)
     into a single verifiable agent identity with dual-hash provenance system.
     """
@@ -127,7 +127,7 @@ class RAIR(BaseModel):
         """Compute deterministic hash of complete RAIR configuration"""
         if v is not None:
             return v
-            
+
         values = info.data
         body = json.dumps(values, default=str, sort_keys=True).encode()
         return hashlib.sha256(body).hexdigest()
@@ -145,7 +145,7 @@ class TrustVaultRecord(BaseModel):
 def validate_rair_configuration(rair_data: dict[str, Any]) -> tuple[bool, list[str]]:
     """
     Validate complete RAIR configuration
-    
+
     Returns:
         tuple: (is_valid, list_of_errors)
     """
@@ -158,7 +158,7 @@ def validate_rair_configuration(rair_data: dict[str, Any]) -> tuple[bool, list[s
 def compute_rair_hashes(rair: RAIR) -> dict[str, str | None]:
     """
     Compute both persona and RAIR provenance hashes
-    
+
     Returns:
         dict: {"persona_hash": str, "rair_hash": str}
     """
