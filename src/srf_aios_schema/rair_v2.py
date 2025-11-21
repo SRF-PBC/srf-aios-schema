@@ -6,8 +6,8 @@ with dual-hash validation system for integrity verification and tamper detection
 import hashlib
 import json
 import uuid
-from datetime import datetime, timezone
-from typing import Dict, List, Optional, Literal, Any
+from datetime import datetime, UTC
+from typing import Literal, Any
 from pydantic import BaseModel, Field, field_validator
 
 # ---------- ARC: Agent Record Core ----------
@@ -21,7 +21,7 @@ class ARC(BaseModel):
     reasoning_engine: Literal["llm", "symbolic", "neuro-symbolic", "hybrid"]
     base_model: str = Field(..., min_length=5, max_length=100)
     checkpoint: str = Field(..., min_length=8, max_length=100)
-    reasoning_params: Dict[str, Any]
+    reasoning_params: dict[str, Any]
     context_window: int = Field(ge=1024, le=128000)
     temperature: float = Field(ge=0.0, le=2.0, default=0.7)
     max_tokens: int = Field(ge=1, le=4096, default=2048)
@@ -31,22 +31,22 @@ class ARC(BaseModel):
     created_by: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
     version: str = "1.0"
-    provenance_hash: Optional[str] = None
+    provenance_hash: str | None = None
 
 # ---------- ROLE: Role & Operational Ledger ----------
 class ROLE(BaseModel):
     """Resource Operations License Envelope - Permissions and governance"""
-    role_scope: List[str]
-    permissions: List[Literal["read", "write", "execute", "audit", "admin"]]
-    reflex_scope: List[str]
+    role_scope: list[str]
+    permissions: list[Literal["read", "write", "execute", "audit", "admin"]]
+    reflex_scope: list[str]
     trust_vector: float = Field(ge=0.0, le=1.0)
     governance_level: Literal["core", "restricted", "sandbox", "observer"] = "sandbox"
-    memory_refs: Optional[List[str]] = []
+    memory_refs: list[str] | None = []
     version: int = 1
 
     @field_validator("role_scope")
     @classmethod
-    def non_empty_scope(cls, v):
+    def non_empty_scope(cls, v: list[str]) -> list[str]:
         if not v:
             raise ValueError("role_scope must contain at least one entry.")
         return v
@@ -55,16 +55,16 @@ class ROLE(BaseModel):
 class MACP(BaseModel):
     """Memory Access Credential Package - Access rights and policies"""
     credential_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    scope: List[Literal["memory.read", "memory.write", "memory.search", "memory.handshake", "trustvault.commit", "audit.export"]]
+    scope: list[Literal["memory.read", "memory.write", "memory.search", "memory.handshake", "trustvault.commit", "audit.export"]]
     issuer: str
     expiration: datetime
-    signature: Optional[str] = None
-    policy_tag: Optional[str] = None
+    signature: str | None = None
+    policy_tag: str | None = None
 
     @field_validator("expiration")
     @classmethod
-    def expiration_future(cls, v):
-        now = datetime.now(timezone.utc) if v.tzinfo else datetime.utcnow()
+    def expiration_future(cls, v: datetime) -> datetime:
+        now = datetime.now(UTC) if v.tzinfo else datetime.utcnow()
         if v <= now:
             raise ValueError("credential expiration must be in the future.")
         return v
@@ -84,17 +84,17 @@ class PERSONA(BaseModel):
     temperament_profile: Literal["strategic", "empathic", "analytic", "stoic", "adaptive"]
     moral_accent: Literal["deontic", "utilitarian", "virtue", "reflexic"]
     tone_vector: TONEVector
-    alignment_directives: List[str]
-    embedding_ref: Optional[str] = None
+    alignment_directives: list[str]
+    embedding_ref: str | None = None
     trust_seed: float = Field(ge=0.0, le=1.0, default=0.95)
     created_by: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
     version: str = "1.0"
-    provenance_hash: Optional[str] = None
+    provenance_hash: str | None = None
 
     @field_validator("provenance_hash", mode="before")
     @classmethod
-    def compute_persona_hash(cls, v, info):
+    def compute_persona_hash(cls, v: str | None, info: Any) -> str:
         """Compute deterministic hash of persona configuration"""
         if v is not None:
             return v
@@ -119,11 +119,11 @@ class RAIR(BaseModel):
     macp: MACP
     persona: PERSONA
     policy_version: str = "v2.0"
-    provenance_hash: Optional[str] = None
+    provenance_hash: str | None = None
 
     @field_validator("provenance_hash", mode="before")
     @classmethod
-    def compute_rair_hash(cls, v, info):
+    def compute_rair_hash(cls, v: str | None, info: Any) -> str:
         """Compute deterministic hash of complete RAIR configuration"""
         if v is not None:
             return v
@@ -142,7 +142,7 @@ class TrustVaultRecord(BaseModel):
     verified: bool = True
 
 # ---------- Validation Utilities ----------
-def validate_rair_configuration(rair_data: dict) -> tuple[bool, list[str]]:
+def validate_rair_configuration(rair_data: dict[str, Any]) -> tuple[bool, list[str]]:
     """
     Validate complete RAIR configuration
     
@@ -155,7 +155,7 @@ def validate_rair_configuration(rair_data: dict) -> tuple[bool, list[str]]:
     except Exception as e:
         return False, [str(e)]
 
-def compute_rair_hashes(rair: RAIR) -> dict:
+def compute_rair_hashes(rair: RAIR) -> dict[str, str | None]:
     """
     Compute both persona and RAIR provenance hashes
     
