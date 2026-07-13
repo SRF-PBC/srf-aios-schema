@@ -5,12 +5,12 @@ The Seldon Reflex Foundation AI Operating System schema package provides
 foundational data structures for governed autonomous AI agents.
 
 This package contains the canonical schema definitions for:
-- RAIR v2 (Reflexic Agent Identity Records)
+- RAIR (Reflexic Agent Identity Record) — v3: emergent PERSONA (temperament/moral facets)
 - Agent identity, memory, and governance structures
 - Trust vectors and compliance frameworks
 """
 
-__version__ = "2.0.0"
+__version__ = "3.0.0"
 __author__ = "Seldon Reflex Foundation"
 __email__ = "foundation@seldonreflex.org"
 __license__ = "FRAND/SEP"
@@ -19,10 +19,13 @@ __license__ = "FRAND/SEP"
 from .rair_v2 import (
     # Core Models
     ARC,
-    ROLE, 
+    ROLE,
     MACP,
     PERSONA,
     TONEVector,
+    WeightedFacet,
+    Temperament,
+    MoralAccent,
     RAIR,
     TrustVaultRecord,
     
@@ -42,7 +45,10 @@ __all__ = [
     "ROLE", 
     "MACP",
     "PERSONA",
-    "TONEVector", 
+    "TONEVector",
+    "WeightedFacet",
+    "Temperament",
+    "MoralAccent",
     "RAIR",
     "TrustVaultRecord",
     

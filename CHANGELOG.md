@@ -5,6 +5,30 @@ All notable changes to the SRF AiOS Schema package will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2026-07-10
+
+### Changed (BREAKING)
+
+- **PERSONA temperament & moral_accent are now EMERGENT, not enums.** Replaced
+  `temperament_profile: Literal["strategic","empathic","analytic","stoic","adaptive"]` and
+  `moral_accent: Literal["deontic","utilitarian","virtue","reflexic"]` with structured
+  emergent-trait models:
+  - `Temperament` = free `narrative` + open weighted `facets` (`list[WeightedFacet]`) + `embedding_ref`.
+  - `MoralAccent` = free `narrative` + open weighted `facets` + `embedding_ref`.
+  - `WeightedFacet` = `{facet, weight, evidence_refs}` — facet names governed by the SRF facet
+    lexicon (open + reconciled, not a fixed enum); `evidence_refs` point to the episodes that
+    ground each facet (emergent grounding).
+- **Rationale:** identity, like meaning, emerges from content/behavior — it is not selected from a
+  fixed menu. The v2 enum could not express blends or novel traits (e.g. "creative"). This makes
+  the identity schema consistent with the SRF substrate principle (IC-46: meaning from content).
+- `PERSONA.version` → `3.0`; `RAIR.policy_version` → `v3.0`; `SCHEMA_VERSION` → `v3.0`.
+- ARC / ROLE / MACP and the dual-hash + TrustVault provenance system are **unchanged**.
+
+### Migration
+
+- v2 RAIR instances carrying `temperament_profile`/`moral_accent` strings must migrate to the
+  `Temperament`/`MoralAccent` objects (a scalar enum becomes a narrative + one-or-more facets).
+
 ## [2.0.0] - 2025-11-08
 
 ### Added

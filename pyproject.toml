@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "srf-aios-schema"
-version = "2.0.1"
+version = "3.0.0"
 description = "SRF AiOS Cognitive Architecture Schema Definitions"
 readme = "README.md"
 license = {text = "FRAND/SEP - See LICENSE file"}
