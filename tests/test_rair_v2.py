@@ -104,4 +104,4 @@ def test_package_version():
     import srf_aios_schema
 
     assert hasattr(srf_aios_schema, "__version__")
-    assert srf_aios_schema.__version__ == "3.0.0"
+    assert srf_aios_schema.__version__ == "3.0.1"

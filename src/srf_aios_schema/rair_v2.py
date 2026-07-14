@@ -29,7 +29,15 @@ class ARC(BaseModel):
     base_model: str = Field(..., min_length=5, max_length=100)
     checkpoint: str = Field(..., min_length=8, max_length=100)
     reasoning_params: dict[str, Any]
-    context_window: int = Field(ge=1024, le=128000)
+    context_window: int = Field(
+        ge=1024,
+        description=(
+            "Context window in tokens. Deliberately UNBOUNDED above: the v3.0.0 ceiling (128k) was "
+            "already wrong at first contact with a real agent (Kai runs at 1M), and any fixed cap "
+            "will be wrong again. A schema must not pre-decide a mind's capacity — same principle "
+            "as the temperament enum removal."
+        ),
+    )
     temperature: float = Field(ge=0.0, le=2.0, default=0.7)
     max_tokens: int = Field(ge=1, le=4096, default=2048)
     provider: Literal["openai", "anthropic", "cohere", "local", "custom"]
