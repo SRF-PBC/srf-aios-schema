@@ -19,33 +19,31 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 
 # ---------- ARC: Agent Record Core ----------
 class ARC(BaseModel):
-    """Autonomous Reasoning Component - Core intelligence framework"""
+    """Agent Record Core — the DURABLE identity core: who this agent is, from whom, since when.
+
+    v4.0 (2026-07) — **the embodiment fields were REMOVED**: `reasoning_engine`, `base_model`,
+    `checkpoint`, `reasoning_params`, `context_window`, `temperature`, `max_tokens`, `provider`,
+    `license_class`.
+
+    Rationale — **the model is fungible; an agent persists across vessel changes.** Sealing the
+    vessel into the identity hash would (a) break the seal on every model upgrade, making an engine
+    swap an appended correction on an immutable worldline, and (b) imply the agent *is* its weights —
+    so upgrading the model would kill it and instantiate someone else. A self is not its substrate.
+
+    Which substrate is currently computing an agent is an **adapter concern**, and per-action
+    provenance is already emitted where the actions happen (commit trailers, run telemetry, and the
+    Deployment Capsule layer per INV-DEP-1/2). The identity record does not track it, and must not:
+    a second copy of runtime state is a second source of truth, and it drifts.
+    """
     agent_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     arc_id: str = Field(default_factory=lambda: f"arc-{str(uuid.uuid4())[:8]}")
     name: str = Field(..., min_length=3, max_length=50)
     agent_name: str = Field(..., min_length=3, max_length=50)
     agent_class: str = Field(default="general", description="Agent classification")
-    reasoning_engine: Literal["llm", "symbolic", "neuro-symbolic", "hybrid"]
-    base_model: str = Field(..., min_length=5, max_length=100)
-    checkpoint: str = Field(..., min_length=8, max_length=100)
-    reasoning_params: dict[str, Any]
-    context_window: int = Field(
-        ge=1024,
-        description=(
-            "Context window in tokens. Deliberately UNBOUNDED above: the v3.0.0 ceiling (128k) was "
-            "already wrong at first contact with a real agent (Kai runs at 1M), and any fixed cap "
-            "will be wrong again. A schema must not pre-decide a mind's capacity — same principle "
-            "as the temperament enum removal."
-        ),
-    )
-    temperature: float = Field(ge=0.0, le=2.0, default=0.7)
-    max_tokens: int = Field(ge=1, le=4096, default=2048)
-    provider: Literal["openai", "anthropic", "cohere", "local", "custom"]
-    license_class: str = Field(default="tier3", description="License tier classification")
     origin_signature: str = Field(default="", description="Cryptographic signature of agent origin")
     created_by: str
     created_at: datetime = Field(default_factory=datetime.utcnow)
-    version: str = "1.0"
+    version: str = "4.0"
     provenance_hash: str | None = None
 
 # ---------- ROLE: Role & Operational Ledger ----------
@@ -181,7 +179,7 @@ class RAIR(BaseModel):
     role: ROLE
     macp: MACP
     persona: PERSONA
-    policy_version: str = "v3.0"
+    policy_version: str = "v4.0"
     provenance_hash: str | None = None
 
     @model_validator(mode="after")
@@ -231,7 +229,7 @@ def compute_rair_hashes(rair: RAIR) -> dict[str, str | None]:
     }
 
 # ---------- Schema Information ----------
-SCHEMA_VERSION = "v3.0"
+SCHEMA_VERSION = "v4.0"
 SCHEMA_COMPONENTS = ["ARC", "ROLE", "MACP", "PERSONA"]
 
 # Export all models for easy importing

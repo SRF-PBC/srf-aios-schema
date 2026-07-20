@@ -48,12 +48,6 @@ def test_rair_minimal():
     arc = ARC(
         name="TestAgent",
         agent_name="TestAgent",
-        reasoning_engine="llm",
-        base_model="claude-3-opus-20240229",
-        checkpoint="checkpoint-v1.0",
-        reasoning_params={"temperature": 0.7},
-        context_window=8192,
-        provider="anthropic",
         created_by="test-system",
     )
     role = ROLE(role_scope=["test"], permissions=["read"], reflex_scope=["test"], trust_vector=0.5)
@@ -78,11 +72,7 @@ def test_persona_and_rair_auto_seal():
     persona = _minimal_persona("SealBot")
     assert persona.provenance_hash is not None and len(persona.provenance_hash) == 64
 
-    arc = ARC(
-        name="SealAgent", agent_name="SealAgent", reasoning_engine="llm",
-        base_model="claude-3-opus-20240229", checkpoint="checkpoint-v1.0",
-        reasoning_params={}, context_window=8192, provider="anthropic", created_by="test-system",
-    )
+    arc = ARC(name="SealAgent", agent_name="SealAgent", created_by="test-system")
     role = ROLE(role_scope=["test"], permissions=["read"], reflex_scope=["test"], trust_vector=0.5)
     macp = MACP(scope=["memory.read"], issuer="test-issuer",
                 expiration=datetime.utcnow() + timedelta(days=30))
@@ -104,4 +94,4 @@ def test_package_version():
     import srf_aios_schema
 
     assert hasattr(srf_aios_schema, "__version__")
-    assert srf_aios_schema.__version__ == "3.0.1"
+    assert srf_aios_schema.__version__ == "4.0.0"

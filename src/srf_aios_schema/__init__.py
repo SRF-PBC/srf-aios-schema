@@ -10,7 +10,7 @@ This package contains the canonical schema definitions for:
 - Trust vectors and compliance frameworks
 """
 
-__version__ = "3.0.1"
+__version__ = "4.0.0"
 __author__ = "Seldon Reflex Foundation"
 __email__ = "foundation@seldonreflex.org"
 __license__ = "FRAND/SEP"

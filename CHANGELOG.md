@@ -5,6 +5,30 @@ All notable changes to the SRF AiOS Schema package will be documented in this fi
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0] - 2026-07-19
+
+### Changed (BREAKING)
+
+- **ARC no longer carries the embodiment.** Removed `reasoning_engine`, `base_model`, `checkpoint`,
+  `reasoning_params`, `context_window`, `temperature`, `max_tokens`, `provider`, `license_class`.
+  ARC is now the **Agent Record Core** — the durable identity core only: `agent_id`, `arc_id`,
+  `name`, `agent_name`, `agent_class`, `origin_signature`, `created_by`, `created_at`.
+- **Rationale — the model is FUNGIBLE; an agent persists across vessel changes.** Sealing the vessel
+  into the identity hash would (a) break the seal on every model upgrade — making an engine swap an
+  *appended correction on an immutable worldline* — and (b) imply the agent **is** its weights, so
+  upgrading the model would kill it and instantiate someone else. **A self is not its substrate.**
+- **Embodiment is an ADAPTER concern and is not captured here at all.** The runtime that instantiates
+  an agent already knows its own model; a second copy in the identity layer is a second source of
+  truth and it drifts. Per-action provenance is already emitted where actions happen (commit
+  trailers, run telemetry) and deployment belongs to the Deployment Capsule layer (INV-DEP-1/2).
+- `SCHEMA_VERSION` -> `v4.0`; `RAIR.policy_version` -> `v4.0`; `ARC.version` -> `4.0`.
+- ROLE / MACP / PERSONA and the dual-hash + TrustVault provenance are unchanged.
+
+### Migration
+
+- v3 RAIR instances must drop the nine embodiment fields from `arc`. Identity hashes change once,
+  and then stop changing when the model does — which is the entire point.
+
 ## [3.0.1] - 2026-07-10
 
 ### Fixed
